@@ -4,49 +4,40 @@ namespace cache\src;
 class Cache {
 
     private $dir;
-    private $gcs;
-    private $odds;
+    private $seconds;
 
-    public function __construct($dir='cache/',$gcs=10,$odds=2) {
+    public function __construct($dir='cache/',$seconds=2) {
         rtrim($dir,'/');
         $dir = $dir . '/';
         $this->dir = $dir;
-        $this->gcs = intval($gcs);
-        $this->odds = intval($odds);
+        $this->seconds = $seconds;
     }
 
     public function ReadCache($key) {
-        $hash = base64_encode($key . time());
+        $cached = false;
+        $hash = base64_encode($key);
         if (file_exists($this->dir . $hash)) {
-            $cached = file_get_contents($this->dir . $hash);
-        } else {
-            $cached = false;
+            if (filemtime($this->dir . $hash) > (time() - $this->seconds)) {
+                $cached = file_get_contents($this->dir . $hash);
+            } else {
+                $this->TrashCache($hash);
+            }
         }
         return $cached;
     }
 
-    public function WriteCache($key='/',$content='',$seconds=2) {
+    public function WriteCache($key='/',$content='') {
         if (!file_exists($this->dir)) {
             mkdir($this->dir);
         }
-        for ($x = 0; $x < $seconds; $x++) {
-            $hash = base64_encode($key . (time() + $x));
-            file_put_contents($this->dir . $hash, $content);
-        }
-        $this->TrashCache($this->gcs,$this->odds);
+        $hash = base64_encode($key);
+        file_put_contents($this->dir . $hash, $content);
     }
 
-    private function TrashCache($gcs,$odds) {
-        $run = rand(1,$odds);
-        if ($run == 1) {
-            $files = scandir($this->dir);
-            foreach ($files as $file) {
-                if ($file != '.' and $file != '..' and filemtime($this->dir . $file) < (time() - $gcs)) {
-                    unlink($this->dir . $file);
-                }
-            }
+    private function TrashCache($hash) {
+        if (file_exists($this->dir . $hash)) {
+            unlink($this->dir . $hash);
         }
-        return true;
     }
 
 }

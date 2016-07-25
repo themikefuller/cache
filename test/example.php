@@ -9,11 +9,9 @@ $key = '/users/example';
 // Settings
 $dir = __DIR__ . '/cache';
 $seconds = 2;
-$gcs = 10;
-$odds = 2;
 
 // New Cache object
-$cache = new \cache\src\Cache($dir,$gcs,$odds);
+$cache = new \cache\src\Cache($dir,$seconds);
 
 // Check for cached version of key request
 $cached = $cache->ReadCache($key);
@@ -24,7 +22,7 @@ if ($cached) {
 // Write cache is none exists.
 else {
     $content = " Content.";
-    $cache->WriteCache($key,$content,$seconds);
+    $cache->WriteCache($key,$content);
     $content = 'Fetched' . $content;
 }
 

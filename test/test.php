@@ -27,22 +27,8 @@ $dir = __DIR__ . '/cache';
 // The default is 2
 $seconds = 2;
 
-// $gcs - The number of seconds to wait before deleting a cached file.
-// A Garbage Collection attempt is run with every WriteCache execution.
-// Garbage collection only actual does anything based on $odds.
-// The default is 10
-$gcs = 10;
-
-// $odds - The odds of Garbage collection actually running.
-// The lower the value the more likely GC is to acually execute.
-// A value is 1 will execute GC every single time WriteCache is executed.
-// A value of 3 means that the odds of it actually executing are 1 in 3.
-// Settings this value to high may result in GC never actually running.
-// The default is 2.
-$odds = 2;
-
 // Load Cache
-$cache = new \cache\src\Cache($dir,$gcs,$odds);
+$cache = new \cache\src\Cache($dir,$seconds);
 
 // Read Cache
 $cached = $cache->ReadCache($key);
@@ -65,7 +51,7 @@ if ($cached) {
     // 2 seconds creates two cached files for this key. The default is 2
     // The content that was fetched is passed as the second parameter.
     // NOT ALL RESOURCES OR VALUES CAN OR SHOULD BE CACHED. It depends on your code.
-    $cache->WriteCache($key,$content,$seconds);
+    $cache->WriteCache($key,$content);
 
 }
 

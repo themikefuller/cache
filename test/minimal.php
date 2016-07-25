@@ -15,8 +15,11 @@ $key = '/users/example';
 // $dir - The path to the save cache files
 $dir = __DIR__ . '/cache';
 
+// $seconds - The number of seconds to cache a key's content
+$seconds = 2;
+
 // New Cache object
-$cache = new \cache\src\Cache($dir);
+$cache = new \cache\src\Cache($dir,$seconds);
 
 // Read Cache and use existing
 $cached = $cache->ReadCache($key);
