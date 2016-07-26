@@ -9,9 +9,10 @@ $key = '/users/example';
 // Settings
 $dir = __DIR__ . '/cache';
 $seconds = 2;
+$odds = 4;
 
 // New Cache object
-$cache = new \cache\src\Cache($dir,$seconds);
+$cache = new \cache\src\Cache($dir,$seconds,$odds);
 
 // Check for cached version of key request
 $cached = $cache->ReadCache($key);

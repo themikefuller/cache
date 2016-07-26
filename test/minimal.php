@@ -18,8 +18,11 @@ $dir = __DIR__ . '/cache';
 // $seconds - The number of seconds to cache a key's content
 $seconds = 2;
 
+// $odds - The odds that Garbage Collection will actually run.
+$odds = 4;
+
 // New Cache object
-$cache = new \cache\src\Cache($dir,$seconds);
+$cache = new \cache\src\Cache($dir,$seconds,$odds);
 
 // Read Cache and use existing
 $cached = $cache->ReadCache($key);

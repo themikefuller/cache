@@ -27,8 +27,13 @@ $dir = __DIR__ . '/cache';
 // The default is 2
 $seconds = 2;
 
+// $odds - The odds that Garbage Collection will actually run.
+// If $odds = 4 then the odds of running garbage collection when called is 1 in 4.
+// The default is 4
+$odds = 4;
+
 // Load Cache
-$cache = new \cache\src\Cache($dir,$seconds);
+$cache = new \cache\src\Cache($dir,$seconds,$odds);
 
 // Read Cache
 $cached = $cache->ReadCache($key);
