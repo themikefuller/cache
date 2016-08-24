@@ -18,7 +18,8 @@ class Cache {
             $key = 'cached';
         }
         $cached = false;
-        $hash = base64_encode($key);
+//        $hash = base64_encode($key);
+        $hash = str_replace(array('+', '/'), array('-', '_'), base64_encode($key));
         if (file_exists($this->dir . $hash)) {
             if (filemtime($this->dir . $hash) > (time() - $this->seconds)) {
                 $cached = file_get_contents($this->dir . $hash);
@@ -33,7 +34,8 @@ class Cache {
         if (!file_exists($this->dir)) {
             mkdir($this->dir);
         }
-        $hash = base64_encode($key);
+//        $hash = base64_encode($key);
+        $hash = str_replace(array('+', '/'), array('-', '_'), base64_encode($key));
         file_put_contents($this->dir . $hash, $content);
     }
 
